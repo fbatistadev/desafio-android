@@ -1,7 +1,7 @@
 package com.picpay.desafio.android
 
 class ExampleService(
-    private val service: PicPayService
+    private val service: UserService
 ) {
 
     fun example(): List<User> {

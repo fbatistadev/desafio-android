@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private lateinit var progressBar: ProgressBar
     private lateinit var adapter: UserListAdapter
 
-    private val url = "https://609a908e0f5a13001721b74e.mockapi.io/picpay/api/"
+    private val url = "http://10.161.100.154:3003/api/"
 
     private val gson: Gson by lazy { GsonBuilder().create() }
 
@@ -38,8 +38,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             .build()
     }
 
-    private val service: PicPayService by lazy {
-        retrofit.create(PicPayService::class.java)
+    private val service: UserService by lazy {
+        retrofit.create(UserService::class.java)
     }
 
     override fun onResume() {
