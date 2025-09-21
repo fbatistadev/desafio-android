@@ -22,8 +22,7 @@ class UserListItemViewHolder(
         name.text = user.name
         username.text = user.username
 
-        // Clear any previous image requests to avoid conflicts
-        picture.dispose()
+        Log.d("ImageLoad", "Binding user: ${user.name}, img URL: ${user.img}")
 
         // Smart fallback based on URL
         val fallbackDrawable = if (user.img.contains("men")) {
@@ -34,25 +33,30 @@ class UserListItemViewHolder(
             R.drawable.avatar_placeholder
         }
 
-        // Show progress bar and placeholder immediately
-        progressBar.visibility = View.VISIBLE
+        picture.dispose()
         picture.setImageResource(fallbackDrawable)
+        progressBar.visibility = View.VISIBLE
+
+        Log.d("ImageLoad", "About to start loading: ${user.img}")
 
         picture.load(user.img) {
             placeholder(fallbackDrawable)
             error(fallbackDrawable)
             crossfade(200)
-            memoryCacheKey("user_avatar_${user.id}")
-            diskCacheKey("user_avatar_${user.id}")
-            allowHardware(true)
+
             listener(
+                onStart = { _ ->
+                    Log.d("ImageLoad", "STARTED loading: ${user.name}")
+                    progressBar.visibility = View.VISIBLE
+                },
                 onError = { _, result ->
+                    Log.e("ImageLoad", "ERROR loading ${user.name}: ${result.throwable}")
+                    Log.e("ImageLoad", "URL was: ${user.img}")
                     progressBar.visibility = View.GONE
-                    Log.e("ImageLoad", "Failed to load ${user.name}: ${result.throwable}")
                 },
                 onSuccess = { _, _ ->
+                    Log.d("ImageLoad", "SUCCESS loading: ${user.name}")
                     progressBar.visibility = View.GONE
-                    Log.d("ImageLoad", "Successfully loaded ${user.name}")
                 }
             )
         }

@@ -3,21 +3,9 @@ package com.picpay.desafio.android
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ListAdapter
 
-class UserListAdapter : RecyclerView.Adapter<UserListItemViewHolder>() {
-
-    var users = emptyList<User>()
-        set(value) {
-            val result = DiffUtil.calculateDiff(
-                UserListDiffCallback(
-                    field,
-                    value
-                )
-            )
-            result.dispatchUpdatesTo(this)
-            field = value
-        }
+class UserListAdapter : ListAdapter<User, UserListItemViewHolder>(UserDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserListItemViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -27,8 +15,29 @@ class UserListAdapter : RecyclerView.Adapter<UserListItemViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: UserListItemViewHolder, position: Int) {
-        holder.bind(users[position])
+        holder.bind(getItem(position))
     }
 
-    override fun getItemCount(): Int = users.size
+    override fun onBindViewHolder(
+        holder: UserListItemViewHolder,
+        position: Int,
+        payloads: MutableList<Any>
+    ) {
+        if (payloads.isEmpty()) {
+            super.onBindViewHolder(holder, position, payloads)
+        } else {
+            // Handle partial updates if needed
+            holder.bind(getItem(position))
+        }
+    }
+}
+
+class UserDiffCallback : DiffUtil.ItemCallback<User>() {
+    override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
+        return oldItem == newItem
+    }
 }
