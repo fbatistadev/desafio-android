@@ -1,35 +1,29 @@
 package com.picpay.desafio.android
 
 import android.app.Application
-import coil.ImageLoader
-import coil.ImageLoaderFactory
-import coil.util.DebugLogger
-import okhttp3.OkHttpClient
-import java.util.concurrent.TimeUnit
+import com.picpay.desafio.android.di.PicPayModuleInitialization
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
+import timber.log.Timber
 
-class PicPayApplication : Application(), ImageLoaderFactory {
+class PicPayApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        setupKoin()
+        setupTimber()
     }
 
-    override fun newImageLoader(): ImageLoader {
-        val okHttpClient = OkHttpClient.Builder()
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
-            .writeTimeout(30, TimeUnit.SECONDS)
-            .retryOnConnectionFailure(true)
-            .build()
+    private fun setupKoin() =
+        startKoin {
+            androidLogger()
+            androidContext(this@PicPayApplication)
+            modules(
+                PicPayModuleInitialization().init()
+            )
+        }
 
-        return ImageLoader.Builder(this)
-            .okHttpClient(okHttpClient)
-            .logger(DebugLogger())
-            .memoryCachePolicy(coil.request.CachePolicy.ENABLED)
-            .diskCachePolicy(coil.request.CachePolicy.ENABLED)
-            .networkCachePolicy(coil.request.CachePolicy.ENABLED)
-            .respectCacheHeaders(false)
-            .crossfade(true)
-            .allowHardware(false)
-            .build()
-    }
+    private fun setupTimber() =
+        Timber.plant(Timber.DebugTree())
 }

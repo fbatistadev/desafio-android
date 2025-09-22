@@ -1,14 +1,16 @@
 package com.picpay.desafio.android.data.model.response
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class ApiUser(
-    @SerializedName("img")
+    @SerialName("img")
     val img: String,
-    @SerializedName("name")
+    @SerialName("name")
     val name: String,
-    @SerializedName("document")
+    @SerialName("id")
     val id: Int,
-    @SerializedName("document")
+    @SerialName("username")
     val username: String,
 )

@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">PicPay</string>
-    <string name="title">Contatos</string>
-    <string name="error">Ocorreu um erro. Tente novamente.</string>
-
+    <string name="contacts_title">Contatos</string>
+    <string name="error_generic">Ops! Algo deu errado</string>
+    <string name="error_network">Falha na conexão de rede</string>
+    <string name="error_network_failure">Falha na conexão de rede</string>
+    <string name="empty_contacts_title">Nenhum contato encontrado</string>
+    <string name="empty_contacts_message">Não há contatos para exibir no momento.</string>
+    <string name="try_again">Tentar novamente</string>
 </resources>

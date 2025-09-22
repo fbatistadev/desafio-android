@@ -1,11 +1,11 @@
 package com.picpay.desafio.android.data.model
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
 
 data class ErrorApi(
-    @SerializedName("message")
+    @SerialName("message")
     val message: String = MSG_UNKNOWN_ERROR,
-    @SerializedName("error_message")
+    @SerialName("error_message")
     val errorMessage: String? = null,
     val code: Int? = null
 ){
